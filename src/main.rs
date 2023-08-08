@@ -2,6 +2,7 @@ mod ops;
 
 use std::env;
 use figlet_rs::FIGfont;
+use crate::ops::Op;
 
 fn main() {
     let standard_font = FIGfont::standard().unwrap();
@@ -20,6 +21,13 @@ fn main() {
 
     if args.get(1) == Some(&String::from("-h")) {
         op = Box::new(ops::HelpOp {});
+        op.execute();
+        return;
+    }
+
+    if args.get(1) == Some(&String::from("-sf")) {
+        let ip_address = args[2].clone();
+        let op = Box::new(ops::SimpleFullScanOp { ip: ip_address });
         op.execute();
         return;
     }
