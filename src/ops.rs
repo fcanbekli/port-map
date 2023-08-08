@@ -1,4 +1,5 @@
-use std::net::TcpStream;
+use std::net::{SocketAddr, TcpStream};
+use std::time::Duration;
 
 pub trait Op {
     fn execute(&self);
@@ -27,15 +28,22 @@ pub struct SimpleFullScanOp {
 impl Op for SimpleFullScanOp {
     fn execute(&self) {
         for i in 1..=5000 {
-            match TcpStream::connect(format!("{}:{}", self.ip, i)) {
-                Ok(mut stream) => {
-                    println!("Port Active {}", i);
+            let server_addr = format!("{}:{}", self.ip, i).parse::<SocketAddr>();
+
+            match server_addr {
+                Ok(addr) => {
+                    match TcpStream::connect_timeout(&addr, Duration::from_millis(1)) {
+                        Ok(mut stream) => {
+                            println!("Port Active {}", i);
+                        }
+                        Err(_) => {}
+                    }
                 }
                 Err(e) => {
-                    println!("Error {}", i);
+                    println!("Error parsing address: {}", e);
+                    return;
                 }
             }
-
         }
     }
 }
