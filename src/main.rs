@@ -1,4 +1,5 @@
 mod ops;
+mod scanner;
 
 use std::env;
 use figlet_rs::FIGfont;
@@ -9,7 +10,6 @@ fn main() {
     let figure = standard_font.convert("Port Map");
     assert!(figure.is_some());
     println!("{}", figure.unwrap());
-
     let mut op: Box<dyn ops::Op>; // Use Box to work with trait objects
     let args: Vec<String> = env::args().collect();
 
