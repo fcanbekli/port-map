@@ -10,20 +10,26 @@ fn main() {
     let figure = standard_font.convert("Port Map");
     assert!(figure.is_some());
     println!("{}", figure.unwrap());
+
     let mut op: Box<dyn ops::Op>; // Use Box to work with trait objects
     let args: Vec<String> = env::args().collect();
 
-    if args.len() == 1 {
-        op = Box::new(ops::UnknownOp {});
-        op.execute();
-        return;
+    match args.len() {
+        1 => {
+            let op = Box::new(ops::UnknownOp {});
+            op.execute();
+        }
+        _ => match args.get(1) {
+            Some(arg) if arg == "-h" => {
+                let op = Box::new(ops::HelpOp {});
+                op.execute();
+            }
+            _ => {
+                // Handle other cases here
+            }
+        }
     }
 
-    if args.get(1) == Some(&String::from("-h")) {
-        op = Box::new(ops::HelpOp {});
-        op.execute();
-        return;
-    }
     let args: Vec<String> = std::env::args().collect();
 
     if args.get(2) == Some(&String::from("-scan")) {

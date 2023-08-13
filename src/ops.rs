@@ -22,7 +22,8 @@ pub struct HelpOp {}
 
 impl Op for HelpOp {
     fn execute(&self) {
-        println!("Help Operation");
+        println!("-scan: Make full scan between 0 to 65535");
+        println!("-scan -port ....: Make scan for specified ports ");
     }
 }
 //HELP OP
