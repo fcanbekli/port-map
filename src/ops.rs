@@ -6,6 +6,7 @@ pub trait Op {
     fn execute(&self);
 }
 
+//UNKNOWN OP
 pub struct UnknownOp {}
 
 impl Op for UnknownOp {
@@ -13,7 +14,9 @@ impl Op for UnknownOp {
         println!("Unknown Operation");
     }
 }
+//UNKNOWN OP
 
+//HELP OP
 pub struct HelpOp {}
 
 impl Op for HelpOp {
@@ -21,21 +24,40 @@ impl Op for HelpOp {
         println!("Help Operation");
     }
 }
+//HELP OP
 
-pub struct SimpleFullScanOp {
+//SIMPLE FULL SCAN
+pub struct FullScanOp {
     pub ip: String
 }
 
-impl Op for SimpleFullScanOp {
+impl Op for FullScanOp {
     fn execute(&self) {
-            for i in 1..=5000 {
+            for i in 1..=65535 {
             if scan_port(&self.ip, i) {
                 println!("Port {} active", i)
             }
         }
     }
 }
+//SIMPLE FULL SCAN
 
+//PORT INTERVAL SCAN
+pub struct PortsScanOp {
+    pub ip: String,
+    pub ports : Vec<u16>
+}
+
+impl Op for PortsScanOp {
+    fn execute(&self) {
+        for &port in &self.ports {
+            if scan_port(&self.ip, port) {
+                println!("Port {} active", port)
+            }
+        }
+    }
+}
+//PORT INTERVAL SCAN
 
 #[cfg(test)]
 mod tests {
