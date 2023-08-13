@@ -28,7 +28,7 @@ pub struct SimpleFullScanOp {
 
 impl Op for SimpleFullScanOp {
     fn execute(&self) {
-        for i in 1..=5000 {
+            for i in 1..=5000 {
             if scan_port(&self.ip, i) {
                 println!("Port {} active", i)
             }

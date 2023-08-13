@@ -25,7 +25,7 @@ fn main() {
         return;
     }
 
-    if args.get(1) == Some(&String::from("-sf")) {
+    if args.get(1) == Some(&String::from("-s")) {
         let ip_address = args[2].clone();
         let op = Box::new(ops::SimpleFullScanOp { ip: ip_address });
         op.execute();
