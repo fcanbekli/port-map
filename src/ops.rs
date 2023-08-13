@@ -1,4 +1,5 @@
 use std::net::{SocketAddr, TcpStream};
+use std::thread;
 use std::time::Duration;
 use crate::scanner::scan_port;
 
@@ -33,10 +34,32 @@ pub struct FullScanOp {
 
 impl Op for FullScanOp {
     fn execute(&self) {
-            for i in 1..=65535 {
-            if scan_port(&self.ip, i) {
-                println!("Port {} active", i)
-            }
+        const NUM_THREADS: usize = 100;
+        let range_size = 65535 / NUM_THREADS;
+
+        let handles: Vec<_> = (0..NUM_THREADS)
+            .map(|thread_id| {
+                let start = thread_id * range_size + 1;
+                let end = if thread_id == NUM_THREADS - 1 {
+                    65535
+                } else {
+                    (thread_id + 1) * range_size
+                };
+
+                let ip = self.ip.clone();
+
+                thread::spawn(move || {
+                    for i in start as u16..=end as u16 {
+                        if scan_port(&ip, i) {
+                            println!("Port {} active", i);
+                        }
+                    }
+                })
+            })
+            .collect();
+
+        for handle in handles {
+            handle.join().expect("Thread panicked");
         }
     }
 }

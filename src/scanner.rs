@@ -10,7 +10,7 @@ pub fn scan_port(addr: &str, port: u16) -> bool {
             }
         }
         Err(_) => {
-            false // or handle the parsing error if needed
+            false
         }
     }
 }
