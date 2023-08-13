@@ -1,6 +1,6 @@
 # Port Map
 
-![Rust Version](https://img.shields.io/badge/rust-1.54+-orange.svg)
+![Rust Version](https://img.shields.io/badge/rust-1.71+-orange.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 This is a simple toy port scanner written in Rust. It's a small project that I created as my first attempt to learn Rust programming. The port scanner allows you to scan a target host for open ports within a specified range.
